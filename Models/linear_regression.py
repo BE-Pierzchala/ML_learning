@@ -2,11 +2,17 @@
 Class for linear regression
 """
 
-import numpy as np
 from typing import List
+
+import numpy as np
 import tqdm
 
+
 class LinearRegressor:
+    """
+    Class for linear regression
+    """
+
     def __init__(self):
         pass
 
@@ -23,7 +29,9 @@ class LinearRegressor:
         """
         return np.dot(x, weights) + bias
 
-    def compute_cost(self, X: np.ndarray, y: np.ndarray, weights: float, bias: float) -> float:
+    def compute_cost(
+        self, X: np.ndarray, y: np.ndarray, weights: float, bias: float
+    ) -> float:
         """
         Method for calculating total cost using the square distance metric
 
@@ -37,9 +45,13 @@ class LinearRegressor:
             (flloat): total cost of using w,b as parameters for linear regression to fit X,y
         """
         size = X.shape[0]
-        return sum([(self.predict(x_, weights, bias) - y_)**2 for (x_, y_) in zip(X, y)])/(2*size)
+        return sum(
+            [(self.predict(x_, weights, bias) - y_) ** 2 for (x_, y_) in zip(X, y)]
+        ) / (2 * size)
 
-    def compute_gradient(self, X: np.ndarray, y: np.ndarray, weights: float, bias: float) -> tuple[np.ndarray, float]:
+    def compute_gradient(
+        self, X: np.ndarray, y: np.ndarray, weights: float, bias: float
+    ) -> tuple[np.ndarray, float]:
         """
         Computes the gradient for linear regression
         Args:
@@ -54,18 +66,25 @@ class LinearRegressor:
         """
         size = y.shape[0]
 
-        dj_dw = sum([(self.predict(x_, weights, bias) - y_)*x_ for (x_, y_) in zip(X, y)])/size
-        dj_db = sum([self.predict(x_, weights, bias) - y_ for (x_, y_) in zip(X, y)])/size
+        dj_dw = (
+            sum([(self.predict(x_, weights, bias) - y_) * x_ for (x_, y_) in zip(X, y)])
+            / size
+        )
+        dj_db = (
+            sum([self.predict(x_, weights, bias) - y_ for (x_, y_) in zip(X, y)]) / size
+        )
 
         return dj_dw, dj_db
 
-    def gradient_descent(self,
-                         X: np.ndarray,
-                         y: np.ndarray,
-                         weights_in: float,
-                         bias_in: float,
-                         step_size: float = 1e-3,
-                         num_iters: int = 1000) -> tuple[np.ndarray, float, List[float]]:
+    def gradient_descent(
+        self,
+        X: np.ndarray,
+        y: np.ndarray,
+        weights_in: float,
+        bias_in: float,
+        step_size: float = 1e-3,
+        num_iters: int = 1000,
+    ) -> tuple[np.ndarray, float, List[float]]:
         """
         Performs batch gradient descent to learn parameters of the model. Updates them by taking num_iters steps with
         learning rate steep_size.
@@ -82,19 +101,18 @@ class LinearRegressor:
             b: updated values of the parameter
             J: Cost history
         """
-        J = []
-        ws = []
+        J = np.ones(num_iters)
+        ws = np.zeros((num_iters, len(weights_in)))
         w = weights_in.copy()
         b = bias_in
 
-        for i in tqdm.tqdm(range(num_iters), desc='Training'):
+        for i in tqdm.tqdm(range(num_iters), desc="Training"):
             dj_dw, dj_db = self.compute_gradient(X, y, w, b)
+            w = w - step_size * dj_dw
+            b = b - step_size * dj_db
 
-            w = w - step_size*dj_dw
-            b = b - step_size*dj_db
-
-            J.append(self.compute_cost(X, y, w, b))
-            ws.append(w)
+            J[i] = self.compute_cost(X, y, w, b)
+            ws[i] = w
 
         print(f"Final cost: {J[-1]}")
         print(f"Final parameters: w {w}, b {b}")
