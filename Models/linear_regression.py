@@ -16,6 +16,11 @@ class LinearRegressor:
     def __init__(self):
         pass
 
+    def get_R2(self, y_expected: np.ndarray, y_predicted: np.ndarray) -> float:
+        res = np.sum((y_expected - y_predicted) ** 2)
+        tot = sum((y_expected - np.mean(y_expected)) ** 2)
+        return 1 - res / tot
+
     def predict(self, x: np.ndarray, weights: np.ndarray, bias: float) -> float:
         """
         Predicts expected y value for input x and parameters w,b
