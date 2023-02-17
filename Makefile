@@ -24,3 +24,8 @@ isort:
 
 interrogate:
 	interrogate -vv -i -I
+
+export_env:
+	conda env export --no-builds | grep -v "prefix" > enviroment.yml
+create_env:
+	conda env create -f enviromnt.yml
