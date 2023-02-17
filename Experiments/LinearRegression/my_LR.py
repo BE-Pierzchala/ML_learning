@@ -14,9 +14,11 @@ import Models.linear_regression as linear_regression
 from config import DATA_PATH, EPERIMENTS_PATH
 
 if __name__ == "__main__":
+
+    data_path = DATA_PATH / "LR"
     # Get data, create numeric columns or drop them
-    train = pd.read_csv(DATA_PATH / "insurance_train.csv")
-    test = pd.read_csv(DATA_PATH / "insurance_test.csv")
+    train = pd.read_csv(data_path / "insurance_train.csv")
+    test = pd.read_csv(data_path / "insurance_test.csv")
 
     # My class is written in numpy arrays
     y_train, X_train = train.charges, train.drop(columns=["charges"])

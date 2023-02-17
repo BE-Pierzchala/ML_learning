@@ -7,8 +7,10 @@ from sklearn.linear_model import LinearRegression
 
 from config import DATA_PATH
 
-train = pd.read_csv(DATA_PATH / "insurance_train.csv")
-test = pd.read_csv(DATA_PATH / "insurance_test.csv")
+data_path = DATA_PATH / "LR"
+
+train = pd.read_csv(data_path / "insurance_train.csv")
+test = pd.read_csv(data_path / "insurance_test.csv")
 
 y_train, X_train = train.charges, train.drop(columns=["charges"])
 y_test, X_test = test.charges, test.drop(columns=["charges"])

@@ -8,7 +8,8 @@ from sklearn.preprocessing import StandardScaler
 
 from config import DATA_PATH
 
-data = pd.read_csv(DATA_PATH / "insurance.csv")
+data_path = DATA_PATH / "LR"
+data = pd.read_csv(data_path / "insurance.csv")
 data = data.sample(frac=1, random_state=42).reset_index(drop=True)
 
 data.sex = data.sex.apply(lambda val: 1 if val == "female" else 0)
@@ -23,7 +24,6 @@ X[X.columns] = scaler.fit_transform(X)
 X["charges"] = y
 
 train, test = train_test_split(X, test_size=0.2, random_state=42)
-print(len(train), len(test))
 
-train.to_csv(DATA_PATH / "insurance_train.csv", index=False)
-test.to_csv(DATA_PATH / "insurance_test.csv", index=False)
+train.to_csv(data_path / "insurance_train.csv", index=False)
+test.to_csv(data_path / "insurance_test.csv", index=False)
