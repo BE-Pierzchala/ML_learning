@@ -2,7 +2,7 @@ In this folder I have scripts for comparing my implementation of linear regressi
 First prep_data is run to scale features (to boost training) and split the data into test and training set.
 
 To see it in action you can type 
-```make test_LR``` from the main folder.
+```make lin_reg``` from the main folder.
 
 Both implementations are comparable.
 

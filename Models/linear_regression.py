@@ -17,27 +17,41 @@ class LinearRegressor:
         self.weights = None
         self.bias = None
 
-    def initialise(self, X: np.ndarray):
+    def initialise(self, X: np.ndarray) -> None:
+        """
+        Initialises the modeels parameters
+        Args:
+            X (): input vector
+
+        Returns:
+
+        """
         self.weights = np.random.random(X.shape[1]).T
         self.bias = 0.0
 
     def score(self, y_expected: np.ndarray, X: np.ndarray) -> float:
+        """
+        Calculates the score for the model as R^2
+        Args:
+            y_expected (): expected values
+            X (): Shape(m,) dimensional input to the model
+
+        Returns:
+            Score of the model
+        """
         res = np.sum((y_expected - self.predict(X)) ** 2)
         tot = sum((y_expected - np.mean(y_expected)) ** 2)
         return 1 - res / tot
 
-    def predict(self, x: np.ndarray) -> float:
+    def predict(self, X: np.ndarray) -> float:
         """
         Predicts expected y value for input x and parameters w,b
         Args:
-            x ():
-            weights ():
-            bias ():
-
+            X (): Shape(m,) dimensional input to the model
         Returns:
             (): expected y value
         """
-        return np.dot(x, self.weights) + self.bias
+        return np.dot(X, self.weights) + self.bias
 
     def compute_cost(self, X: np.ndarray, y: np.ndarray) -> float:
         """
@@ -46,8 +60,6 @@ class LinearRegressor:
         Args:
             X (): Shape(m,) dimensional input to the model
             y (): Shape(m,) Labels
-            weights (): weights of the model
-            bias (): bias of the model
 
         Returns:
             (flloat): total cost of using w,b as parameters for linear regression to fit X,y
@@ -83,21 +95,17 @@ class LinearRegressor:
         y: np.ndarray,
         step_size: float = 1e-3,
         num_iters: int = 1000,
-    ) -> tuple[np.ndarray, float, List[float]]:
+    ) -> np.ndarray:
         """
         Performs batch gradient descent to learn parameters of the model. Updates them by taking num_iters steps with
         learning rate steep_size.
         Args:
             X (): Shape(m,) dimensional input to the model
             y (): Shape(m,) Labels
-            weights_in (): weights of the model
-            bias_in (): bias of the model
             step_size (): learning rate
             num_iters (): number of steps for the model to take
 
         Returns:
-            w: updated values of the parameter
-            b: updated values of the parameter
             J: Cost history
         """
         self.initialise(X)
