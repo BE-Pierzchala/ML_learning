@@ -20,5 +20,5 @@ y_test, X_test = test[target], test.drop(columns=[target])
 reg = LogisticRegression().fit(X_train, y_train)
 
 print(f"Final parameters: {reg.coef_}")
-print(f"Train score: {reg.score(X_train, y_train)}")
-print(f"Test score: {reg.score(X_test, y_test)}")
+print(f"Train score: {reg.precision(X_train, y_train)}")
+print(f"Test score: {reg.precision(X_test, y_test)}")

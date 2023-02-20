@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     # Initialise parameters
     LR = linear_regression.LinearRegressor()
-    J = LR.fit(X_train, y_train, step_size=1e-2, num_iters=int(1e3))
+    J = LR.fit(X_train, y_train, step_size=1e-2, num_iters=int(1e3), lambda_=0.1)
 
     with open(EPERIMENTS_PATH / "LinearRegression/parameters.txt", "w") as file:
         np.savetxt(file, np.concatenate((LR.weights, np.array([LR.bias]))))

@@ -16,8 +16,9 @@ class LogisticRegressor:
     def __init__(self):
         self.weights = None
         self.bias = None
+        self.lambda_ = None
 
-    def initialise(self, X: np.ndarray) -> None:
+    def initialise(self, X: np.ndarray, lambda_: float) -> None:
         """
         Initialises model's parameters
         Args:
@@ -25,6 +26,7 @@ class LogisticRegressor:
         """
         self.weights = np.random.random(X.shape[1]).T
         self.bias = 0.0
+        self.lambda_ = lambda_
 
     def sigmoid(self, z: np.ndarray) -> np.ndarray:
         """
@@ -92,7 +94,9 @@ class LogisticRegressor:
         predictions = self._predict(X)
         losses = -y * np.log(predictions) - (1 - y) * np.log(1 - predictions)
 
-        return np.sum(losses) / size
+        return np.sum(losses) / size + self.lambda_ * np.sum(
+            np.square(self.weights)
+        ) / (2 * size)
 
     def compute_gradient(
         self, X: np.ndarray, y: np.ndarray
@@ -109,7 +113,10 @@ class LogisticRegressor:
         """
         size = y.shape[0]
 
-        dj_dw = sum([(self._predict(x_) - y_) * x_ for (x_, y_) in zip(X, y)]) / size
+        dj_dw = (
+            sum([(self._predict(x_) - y_) * x_ for (x_, y_) in zip(X, y)]) / size
+            + self.lambda_ / size * self.weights
+        )
         dj_db = sum([self._predict(x_) - y_ for (x_, y_) in zip(X, y)]) / size
 
         return dj_dw, dj_db
@@ -120,11 +127,13 @@ class LogisticRegressor:
         y: np.ndarray,
         step_size: float = 1e-3,
         num_iters: int = 1000,
+        lambda_: float = 0.0,
     ) -> np.ndarray:
         """
         Performs batch gradient descent to learn parameters of the model. Updates them by taking num_iters steps with
         learning rate steep_size.
         Args:
+            lambda_ (): regularisation parameter
             X (): Shape(m,) dimensional input to the model
             y (): Shape(m,) Labels
             step_size (): learning rate
@@ -133,7 +142,7 @@ class LogisticRegressor:
         Returns:
             J: Cost history
         """
-        self.initialise(X)
+        self.initialise(X, lambda_)
         J = np.ones(num_iters)
 
         for i in tqdm.tqdm(range(num_iters), desc="Training"):

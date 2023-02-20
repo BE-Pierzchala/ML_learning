@@ -15,19 +15,21 @@ class LinearRegressor:
 
     def __init__(self):
         self.weights = None
-        self.bias = None
+        self.bias = 0
+        self.lambda_ = None
 
-    def initialise(self, X: np.ndarray) -> None:
+    def initialise(self, X: np.ndarray, lambda_: float) -> None:
         """
-        Initialises the modeels parameters
+        Initialises the models parameters
         Args:
+            lambda_ (): parameter for regularisation
             X (): input vector
 
         Returns:
 
         """
         self.weights = np.random.random(X.shape[1]).T
-        self.bias = 0.0
+        self.lambda_ = lambda_
 
     def score(self, y_expected: np.ndarray, X: np.ndarray) -> float:
         """
@@ -65,9 +67,11 @@ class LinearRegressor:
             (flloat): total cost of using w,b as parameters for linear regression to fit X,y
         """
         size = X.shape[0]
-        return sum([(self.predict(x_) - y_) ** 2 for (x_, y_) in zip(X, y)]) / (
+        cost = sum([(self.predict(x_) - y_) ** 2 for (x_, y_) in zip(X, y)]) / (
             2 * size
         )
+
+        return cost + self.lambda_ / (2 * size) * np.sum(np.square(self.weights))
 
     def compute_gradient(
         self, X: np.ndarray, y: np.ndarray
@@ -84,7 +88,10 @@ class LinearRegressor:
         """
         size = y.shape[0]
 
-        dj_dw = sum([(self.predict(x_) - y_) * x_ for (x_, y_) in zip(X, y)]) / size
+        dj_dw = (
+            sum([(self.predict(x_) - y_) * x_ for (x_, y_) in zip(X, y)]) / size
+            + self.lambda_ / size * self.weights
+        )
         dj_db = sum([self.predict(x_) - y_ for (x_, y_) in zip(X, y)]) / size
 
         return dj_dw, dj_db
@@ -95,11 +102,13 @@ class LinearRegressor:
         y: np.ndarray,
         step_size: float = 1e-3,
         num_iters: int = 1000,
+        lambda_: float = 0.0,
     ) -> np.ndarray:
         """
-        Performs batch gradient descent to learn parameters of the model. Updates them by taking num_iters steps with
+        Performs batch gradient descent to learn the parameters of the model. Updates them by taking num_iters steps with
         learning rate steep_size.
         Args:
+            lambda_ (): regularisation parameter
             X (): Shape(m,) dimensional input to the model
             y (): Shape(m,) Labels
             step_size (): learning rate
@@ -108,7 +117,7 @@ class LinearRegressor:
         Returns:
             J: Cost history
         """
-        self.initialise(X)
+        self.initialise(X, lambda_)
         J = np.ones(num_iters)
 
         for i in tqdm.tqdm(range(num_iters), desc="Training"):

@@ -14,6 +14,15 @@ log_reg:
 	@echo "Mine"
 	python Experiments/LogisticRegression/log_reg_mine.py
 
+network:
+	@echo "Preparing data"
+	python Experiments/data_prep.py LogisticRegression adult.csv income
+	@echo "Mine"
+	python Experiments/NeuralNetwork/NN_mine.py
+
+test:
+	pytest Tests
+
 clean_code: isort black interrogate
 
 black:
