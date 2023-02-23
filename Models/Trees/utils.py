@@ -28,8 +28,7 @@ def binary_split_dataset(
     X, node_indices: list, feature: int
 ) -> tuple[List[int], List[int]]:
     """
-    Splits the data at the given node into
-    left and right branches
+    Splits the data at the given node into left and right branches
 
     Args:
         X (ndarray):             Data matrix of shape(n_samples, n_features)

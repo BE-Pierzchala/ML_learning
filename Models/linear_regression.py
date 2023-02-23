@@ -105,8 +105,8 @@ class LinearRegressor:
         lambda_: float = 0.0,
     ) -> np.ndarray:
         """
-        Performs batch gradient descent to learn the parameters of the model. Updates them by taking num_iters steps with
-        learning rate steep_size.
+        Performs batch gradient descent to learn the parameters of the model. Updates them by taking num_iters steps
+        with learning rate steep_size.
         Args:
             lambda_ (): regularisation parameter
             X (): Shape(m,) dimensional input to the model

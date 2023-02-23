@@ -2,8 +2,6 @@
 Class for logistical regression
 """
 
-from typing import List
-
 import numpy as np
 import tqdm
 

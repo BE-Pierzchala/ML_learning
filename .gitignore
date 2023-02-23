@@ -3,3 +3,7 @@
 .envrc
 *__pycache__/
 *.pyc
+/venv
+*.lock
+*.toml
+*test.py

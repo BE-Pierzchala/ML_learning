@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 
-from config import DATA_PATH, EPERIMENTS_PATH
+from config import DATA_PATH, EXPERIMENTS_PATH
 from Models.NeuralNetwork.neural_network import NeuralNetwork
 
 # Use the same binary classification data set
@@ -41,4 +41,4 @@ fig = px.scatter(
     log_y=True,
     labels={"x": "iteration", "y": "cost"},
 )
-fig.write_image(EPERIMENTS_PATH / "NeuralNetwork/cost.png")
+fig.write_image(EXPERIMENTS_PATH / "NeuralNetwork/cost.png")

@@ -9,7 +9,7 @@ import pandas as pd
 import plotly.express as px
 
 import Models.linear_regression as linear_regression
-from config import DATA_PATH, EPERIMENTS_PATH
+from config import DATA_PATH, EXPERIMENTS_PATH
 
 if __name__ == "__main__":
     data_path = DATA_PATH / "LinearRegression"
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     LR = linear_regression.LinearRegressor()
     J = LR.fit(X_train, y_train, step_size=1e-2, num_iters=int(1e3), lambda_=0.1)
 
-    with open(EPERIMENTS_PATH / "LinearRegression/parameters.txt", "w") as file:
+    with open(EXPERIMENTS_PATH / "LinearRegression/parameters.txt", "w") as file:
         np.savetxt(file, np.concatenate((LR.weights, np.array([LR.bias]))))
 
     print(f"Score on test: {LR.score(y_train, X_train)}")
@@ -43,4 +43,4 @@ if __name__ == "__main__":
         log_y=True,
         labels={"x": "iteration", "y": "cost"},
     )
-    fig.write_image(EPERIMENTS_PATH / "LinearRegression/cost.png")
+    fig.write_image(EXPERIMENTS_PATH / "LinearRegression/cost.png")

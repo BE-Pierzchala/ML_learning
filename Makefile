@@ -23,8 +23,10 @@ network:
 test:
 	pytest Tests
 
-clean_code: isort black interrogate
+clean_code: isort black interrogate lint
 
+lint:
+	flakehell lint .
 black:
 	black .
 
@@ -35,6 +37,7 @@ interrogate:
 	interrogate -vv -i -I
 
 export_env:
-	conda env export --no-builds | grep -v "prefix" > enviroment.yml
-create_env:
-	conda env create -f enviromnt.yml
+	poetry export --without-hashes -f requirements.txt --output requirements.txt
+
+install:
+	pip install -r requirements.txt

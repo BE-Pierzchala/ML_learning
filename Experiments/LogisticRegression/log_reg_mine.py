@@ -7,7 +7,7 @@ import pandas as pd
 import plotly.express as px
 
 import Models.logistic_regression as logistic_regression
-from config import DATA_PATH, EPERIMENTS_PATH
+from config import DATA_PATH, EXPERIMENTS_PATH
 
 data_path = DATA_PATH / "LogisticRegression"
 
@@ -29,7 +29,7 @@ LR = logistic_regression.LogisticRegressor()
 J = LR.fit(X_train, y_train, step_size=1e-1, num_iters=int(1e2), lambda_=0.1)
 
 # Save models parameters
-with open(EPERIMENTS_PATH / "LogisticRegression/parameters.txt", "w") as file:
+with open(EXPERIMENTS_PATH / "LogisticRegression/parameters.txt", "w") as file:
     np.savetxt(file, np.concatenate((LR.weights, np.array([LR.bias]))))
 
 print(f"Score on test: {LR.score(y_train, X_train)}")
@@ -42,4 +42,4 @@ fig = px.scatter(
     log_y=True,
     labels={"x": "iteration", "y": "cost"},
 )
-fig.write_image(EPERIMENTS_PATH / "LogisticRegression/cost.png")
+fig.write_image(EXPERIMENTS_PATH / "LogisticRegression/cost.png")
